@@ -17,7 +17,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-#TODO: Switch to type-safe protocol
 class URLBuilderInterface(ABC):
     """Abstract base class for URL builders"""
 
@@ -44,7 +43,7 @@ class AlphaVantageURLBuilder(URLBuilderInterface):
 
     def __init__(self):
         self.params = self._init_params()
-        self.url: Optional[str] = None
+        self._url: Optional[str] = None
 
     def _init_params(self) -> Dict[str, str]:
         """Initialize with API key"""
@@ -67,13 +66,13 @@ class AlphaVantageURLBuilder(URLBuilderInterface):
     def build(self) -> str:
         """Build the complete URL"""
         query_string = urlencode(self.params)
-        self.url = f"{self.BASE_URL}?{query_string}"
-        return self.url
+        self._url = f"{self.BASE_URL}?{query_string}"
+        return self._url
 
     @property
     def url(self) -> Optional[str]:
         """Get the built URL"""
-        return self.url
+        return self._url
 
 #TODO: Switch to Factory pattern
 class URLDirector:
